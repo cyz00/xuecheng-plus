@@ -106,6 +106,7 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql-connector-java.version}</version>
             </dependency>
+
             <!-- mybatis plus 集成Spring Boot启动器 -->
             <dependency>
                 <groupId>com.baomidou</groupId>
