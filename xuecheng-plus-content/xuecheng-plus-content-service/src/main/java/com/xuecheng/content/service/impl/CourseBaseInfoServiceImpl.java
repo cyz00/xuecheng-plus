@@ -6,16 +6,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xuecheng.base.exception.XueChengPlusException;
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
-import com.xuecheng.content.mapper.CourseBaseMapper;
-import com.xuecheng.content.mapper.CourseCategoryMapper;
-import com.xuecheng.content.mapper.CourseMarketMapper;
-import com.xuecheng.content.model.dto.AddCourseDto;
-import com.xuecheng.content.model.dto.CourseBaseInfoDto;
-import com.xuecheng.content.model.dto.EditCourseDto;
-import com.xuecheng.content.model.dto.QueryCourseParamsDto;
-import com.xuecheng.content.model.po.CourseBase;
-import com.xuecheng.content.model.po.CourseCategory;
-import com.xuecheng.content.model.po.CourseMarket;
+import com.xuecheng.content.mapper.*;
+import com.xuecheng.content.model.dto.*;
+import com.xuecheng.content.model.po.*;
 import com.xuecheng.content.service.CourseBaseInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -36,6 +29,12 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
     CourseMarketMapper courseMarketMapper;
     @Autowired
     CourseCategoryMapper courseCategoryMapper;
+    @Autowired
+    CourseTeacherMapper courseTeacherMapper;
+    @Autowired
+    TeachplanMapper teachplanMapper;
+    @Autowired
+    TeachplanMediaMapper teachplanMediaMapper;
 
     @Override
     public PageResult<CourseBase> queryCourseBaseList(PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto){
@@ -212,5 +211,40 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
 
     }
 
-
+    @Override
+    @Transactional
+    public void deleteCourse(Long companyId,Long courseId) {
+        CourseBase courseBase = courseBaseMapper.selectById(courseId);
+        String audit_status = courseBase.getAuditStatus();
+        if(courseBase==null){
+            XueChengPlusException.cast("课程不存在");
+        }
+        if(audit_status.equals("202002")){
+            //数据合法性校验
+            //校验本机构只能修改本机构的课程
+            if(!courseBase.getCompanyId().equals(companyId)){
+                XueChengPlusException.cast("本机构只能修改本机构的课程");
+            }
+            //删除教师信息
+            LambdaQueryWrapper<CourseTeacher> teacherWrapper = new LambdaQueryWrapper<>();
+            teacherWrapper.eq(CourseTeacher::getCourseId,courseId);
+            courseTeacherMapper.delete(teacherWrapper);
+            //删除课程营销信息
+            courseMarketMapper.deleteById(courseId);
+            //删除课程计划
+            LambdaQueryWrapper<Teachplan> teachplanWrapper = new LambdaQueryWrapper<>();
+            teachplanWrapper.eq(Teachplan::getCourseId,courseId);
+            List<Teachplan> teachplans = teachplanMapper.selectList(teachplanWrapper);
+            teachplans.stream().forEach(item->{
+                LambdaQueryWrapper<TeachplanMedia> wrapper = new LambdaQueryWrapper();
+                wrapper.eq(TeachplanMedia::getTeachplanId,item.getId());
+                //删除课程计划关联信息
+                teachplanMediaMapper.delete(wrapper);
+            });
+            //删除课程
+            teachplanMapper.delete(teachplanWrapper);
+            //删除课程基本信息
+            courseBaseMapper.deleteById(courseBase);
+        }
+    }
 }

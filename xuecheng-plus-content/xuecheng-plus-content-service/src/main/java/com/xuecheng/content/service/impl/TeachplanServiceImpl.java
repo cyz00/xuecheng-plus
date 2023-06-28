@@ -73,8 +73,9 @@ public class TeachplanServiceImpl implements TeachplanService {
             teachplanMapper.deleteById(teachplan);
 
             LambdaQueryWrapper<TeachplanMedia> queryWrapper1 = new LambdaQueryWrapper<>();
-            queryWrapper1=queryWrapper1.eq(TeachplanMedia::getTeachplanId,teachplanId);
-            if(!queryWrapper1.isEmptyOfEntity()){
+            queryWrapper1.eq(TeachplanMedia::getTeachplanId,teachplanId);
+            TeachplanMedia teachplanMedia = teachplanMediaMapper.selectOne(queryWrapper1);
+            if(teachplanMedia !=null){
                 teachplanMediaMapper.deleteById(queryWrapper1);
             }
 //            teachplanMediaMapper.deleteById(queryWrapper1);
