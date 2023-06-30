@@ -11,10 +11,15 @@
 
 
 	<dependencies>
+		<!--上报服务-->
 		<dependency>
-			<groupId>com.xuecheng</groupId>
-			<artifactId>xuecheng-plus-content-service</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
 		</dependency>
 
 		<dependency>
@@ -26,6 +31,7 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-context</artifactId>
+			<version>2.2.6.RELEASE</version>
 		</dependency>
 		<!-- Spring Boot 的 Spring Web MVC 集成 -->
 		<dependency>

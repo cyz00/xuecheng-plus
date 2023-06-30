@@ -31,6 +31,7 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-context</artifactId>
+			<version>2.2.6.RELEASE</version>
 		</dependency>
 		<!-- Spring Boot 集成 Junit -->
 		<dependency>

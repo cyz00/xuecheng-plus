@@ -1,16 +1,30 @@
-server:
-  servlet:
-    context-path: /content
-  port: 63040
+#server:
+#  servlet:
+#    context-path: /content
+#  port: 63040
 #微服务配置
 spring:
   application:
-    name: content-api
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.101.65:3306/xcplus_content?serverTimezone=UTC&userUnicode=true&useSSL=false&
-    username: root
-    password: mysql
+    name: content-api #服务名
+  cloud:
+    nacos:
+      server-addr: 192.168.101.65:8848
+      discovery: #服务注册的相关配置
+        namespace: cy-dev
+        group: xuecheng-plus-project
+      config: #配置文件相关信息
+        namespace: cy-dev
+        group: xuecheng-plus-project
+        file-extension: yaml
+        refresh-enabled: true
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://192.168.101.65:3306/xcplus_content?serverTimezone=UTC&userUnicode=true&useSSL=false&
+#    username: root
+#    password: mysql
+
+  profiles:
+    active: dev #环境名
 # 日志文件配置路径
 logging:
   config: classpath:log4j2-dev.xml
@@ -21,5 +35,4 @@ swagger:
   base-package: com.xuecheng.content
   enabled: true
   version: 1.0.0
-
 
