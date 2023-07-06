@@ -1,10 +1,10 @@
 ### 查询课程信息
-POST {{content_host}}/content/course/list?pageNo=1&pageSize=10
+POST {{gateway_host}}/content/course/list?pageNo=1&pageSize=10
 Content-Type: application/json
 
 {
   "auditStatus": "202002",
-  "courseName": "",
+  "courseName": "java",
   "publishStatus": ""
 }
 
@@ -46,7 +46,7 @@ Content-Type: application/json
 
 
 ### 删除课程计划
-DELETE {{content_host}}/content/teachplan/294
+DELETE {{gateway_host}}/content/teachplan/294
 
 <> 2023-06-17T154111.200.json
 

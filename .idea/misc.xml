@@ -11,6 +11,8 @@
         <option value="$PROJECT_DIR$/xuecheng-plus-generator/pom.xml" />
         <option value="$PROJECT_DIR$/xuecheng-plus-parent/pom.xml" />
         <option value="$PROJECT_DIR$/xuecheng-plus-base/pom.xml" />
+        <option value="$PROJECT_DIR$/xuecheng-plus-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/xuecheng-plus-media/pom.xml" />
       </list>
     </option>
   </component>
