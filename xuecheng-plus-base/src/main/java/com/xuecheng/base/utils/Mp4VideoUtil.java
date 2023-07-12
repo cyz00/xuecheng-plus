@@ -89,7 +89,7 @@ public class Mp4VideoUtil extends VideoUtil {
         //转换后mp4文件的名称
         String mp4_name = "out.mp4";
         //转换后mp4文件的路径
-        String mp4_path = "F:\\zcy\\mdia\\video\\bigfile_test\\";
+        String mp4_path = "F:\\zcy\\media\\video\\bigfile_test\\out.mp4";
         //创建工具类对象
         Mp4VideoUtil videoUtil = new Mp4VideoUtil(ffmpeg_path,video_path,mp4_name,mp4_path);
         //开始视频转换，成功将返回success
