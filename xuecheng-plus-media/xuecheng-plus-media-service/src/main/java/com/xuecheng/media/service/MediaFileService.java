@@ -96,4 +96,7 @@ public interface MediaFileService {
   * @date 2023/7/5
   */
  public boolean addMediaFilesToMinIO(String localFilePath,String mimeType,String bucket, String objectName);
+
+ //根据媒资id查询信息
+ MediaFiles getFileById(String mediaId);
 }
