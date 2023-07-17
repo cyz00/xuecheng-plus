@@ -33,11 +33,12 @@ public interface MediaFileService {
   * @param companyId 机构信息
   * @param uploadFileParamsDto 文件信息
   * @param localFilepath 文件本地路径
+  * @param objectName
   * @return com.xuecheng.base.model.PageResult<com.xuecheng.media.model.dto.UploadFileResultDto>
   * @author zcy
   * @date 2023/7/5
   */
- public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilepath);
+ public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilepath,String objectName);
 
  public MediaFiles addMediaFilesToDb(Long companyId,String fileMd5,UploadFileParamsDto uploadFileParamsDto,String bucket,String objectName);
  /**

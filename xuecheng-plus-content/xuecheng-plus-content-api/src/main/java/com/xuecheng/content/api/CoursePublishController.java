@@ -52,8 +52,4 @@ public class CoursePublishController {
         Long companyId = 1232141425L;
         coursePublishService.publish(companyId,courseId);
     }
-
-
-
-
     }

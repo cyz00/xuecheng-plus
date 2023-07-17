@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 
 /**
@@ -12,6 +13,7 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
  * @description 内容管理服务启动类
  * @date 2023/6/12
  */
+@EnableFeignClients(basePackages={"com.xuecheng.content.feignclient"})
 @EnableSwagger2Doc
 @SpringBootApplication
 public class ContentApplication {

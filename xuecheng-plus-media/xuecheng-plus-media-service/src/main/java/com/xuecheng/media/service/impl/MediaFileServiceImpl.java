@@ -8,6 +8,7 @@ import com.xuecheng.base.exception.XueChengPlusException;
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
 import com.xuecheng.base.model.RestResponse;
+import com.xuecheng.base.utils.StringUtil;
 import com.xuecheng.media.mapper.MediaFilesMapper;
 import com.xuecheng.media.mapper.MediaProcessMapper;
 import com.xuecheng.media.model.dto.QueryMediaParamsDto;
@@ -423,7 +424,7 @@ public class MediaFileServiceImpl implements MediaFileService {
 
     //    @Transactional
     @Override
-    public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath) {
+    public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath,String objectName) {
         File file = new File(localFilePath);
         if (!file.exists()) {
             XueChengPlusException.cast("文件不存在");
@@ -439,7 +440,10 @@ public class MediaFileServiceImpl implements MediaFileService {
         //文件的默认目录
         String defaultFolderPath = getDefaultFolderPath();
         //存储到minio中的对象名(带目录)
-        String  objectName = defaultFolderPath + fileMd5 + extension;
+        if(StringUtil.isEmpty(objectName)){
+            objectName = defaultFolderPath+fileMd5+extension+extension;
+        }
+//        String  objectName = defaultFolderPath + fileMd5 + extension;
         //将文件上传到minio
         boolean result = addMediaFilesToMinIO(localFilePath, mimeType, bucket_files, objectName);
         if(!result){
@@ -456,7 +460,6 @@ public class MediaFileServiceImpl implements MediaFileService {
         UploadFileResultDto uploadFileResultDto = new UploadFileResultDto();
         BeanUtils.copyProperties(mediaFiles, uploadFileResultDto);
         return uploadFileResultDto;
-
     }
 
 }
