@@ -25,7 +25,7 @@ public interface CourseBaseInfoService  {
  * @date 2023
  */
     //课程分页查询
-    PageResult<CourseBase> queryCourseBaseList(PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto);
+    PageResult<CourseBase> queryCourseBaseList(Long companyId,PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto);
     /**
      * @description 添加课程基本信息
      * @param companyId  教学机构id
