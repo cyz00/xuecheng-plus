@@ -1,18 +1,23 @@
 package com.xuecheng.checkcode.controller;
 
-import com.xuecheng.base.model.RestResponse;
 import com.xuecheng.checkcode.model.CheckCodeParamsDto;
 import com.xuecheng.checkcode.model.CheckCodeResultDto;
 import com.xuecheng.checkcode.service.CheckCodeService;
+import com.xuecheng.checkcode.service.SendCheckCodeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Mr.M
@@ -22,7 +27,14 @@ import java.util.Map;
  */
 @Api(value = "验证码服务接口")
 @RestController
+@Slf4j
 public class CheckCodeController {
+    @Autowired
+    CheckCodeService checkCodeService;
+    @Autowired
+    RedisTemplate<String,String> redisTemplate;
+    @Autowired
+    SendCheckCodeService sendCheckCodeService;
 
     @Resource(name = "PicCheckCodeService")
     private CheckCodeService picCheckCodeService;
@@ -45,4 +57,48 @@ public class CheckCodeController {
         Boolean isSuccess = picCheckCodeService.verify(key,code);
         return isSuccess;
     }
+//    @ApiOperation(value="发送验证码", notes="发送验证信息")
+//    @PostMapping(value = "/phone")
+//    public void SendCheckCode(@RequestParam("param1") String phone){
+////        String code = redisTemplate.opsForValue().get(phone);
+////        if(!StringUtils.isEmpty(code)){
+////            return;
+////        }
+//        // 如果redis获取不到，进行阿里云发送
+//        //生成随机数
+//        String code = sendCheckCodeService.generate(6);
+//        Map map = new HashMap();
+//        map.put("code",code);
+//        boolean b = sendCheckCodeService.sendPhoneCheckCode(phone,map);
+//        if (b){
+//            //如果发送成功，就把验证码存到redis里，设置5分钟有效时间
+//            redisTemplate.opsForValue().set(phone,code,5, TimeUnit.MINUTES);
+//            log.debug("成功");
+//            log.debug("验证码为:{}",code);
+////            System.out.println("验证码为"+code)；
+//        }else {
+//            log.debug("失败");
+//        }
+//    }
+//    @ApiOperation(value = "发送邮箱验证码", tags = "发送邮箱验证码")
+//    @PostMapping("/phone")
+//    public void sendEMail(@RequestParam("param1") String email) {
+//        String code = MailUtil.achieveCode();
+//        sendCheckCodeService.sendEMail(email, code);
+//    }
+    @ApiOperation(value = "发送验证码", tags = "发送验证码")
+    @PostMapping("/phone")
+    public void sendCode(@RequestParam("param1") String phone) {
+        String code = redisTemplate.opsForValue().get(phone);
+        if(!StringUtils.isEmpty(code)){
+            log.debug("验证码为:{}",code);
+            return;
+        }
+        //生成随机数
+        code = sendCheckCodeService.generate(6);
+        redisTemplate.opsForValue().set(phone,code,1, TimeUnit.MINUTES);
+        log.debug("成功");
+        log.debug("验证码为:{}",code);
+    }
+
 }

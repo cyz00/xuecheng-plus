@@ -7,6 +7,7 @@ import com.xuecheng.ucenter.model.po.XcUser;
 import com.xuecheng.ucenter.service.VerifyService;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -59,6 +60,11 @@ public class LoginController {
     @ApiOperation(value = "注册账号",tags ="注册账号" )
     @PostMapping("/register")
     public void register(@RequestBody RegisterDto registerDto) {
+        if(StringUtils.isNotEmpty(registerDto.getCellphone())){
+            registerDto.setCheckcodekey(registerDto.getCellphone());
+        }else{
+            registerDto.setCheckcodekey(registerDto.getEmail());
+        }
         verifyService.register(registerDto);
     }
 

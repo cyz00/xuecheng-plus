@@ -85,4 +85,5 @@ public class PicCheckCodeServiceImpl extends AbstractCheckCodeService implements
         }
         return imgBase64Encoder;
     }
+
 }
