@@ -65,6 +65,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()//其它请求全部放行
                 .and()
                 .formLogin().successForwardUrl("/login-success");//登录成功跳转到/login-success
+        //注册报错403，关闭csrf保护机制
+        http.csrf().disable();
     }
 
     public static void main(String[] args) {
