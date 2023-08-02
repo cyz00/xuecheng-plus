@@ -236,7 +236,13 @@ public class CoursePublishServiceImpl implements CoursePublishService {
         }
 
     }
-
+    /**
+     * @description 查询课程发布信息
+     * @param courseId  课程id
+     * @return CoursePublish
+     * @author zcy
+     * @date 2023/7/14
+     */
     @Override
     public CoursePublish getCoursePublish(Long courseId) {
         CoursePublish coursePublish = coursePublishMapper.selectById(courseId);
